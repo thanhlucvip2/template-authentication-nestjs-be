@@ -16,6 +16,16 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@Utils/*": ["./src/utils/*"],
+      "@Entitys/*": ["./src/entitys/*"],
+      "@Helpers/*": ["./src/helpers/*"],
+      "@Systems/*": ["./src/systems/*"],
+      "@User/*": ["./src/user/*"],
+      "@Apis/*": ["./src/apis/*"],
+      "@Constants/*": ["./src/constants/*"],
+      "@Dto/*": ["./src/dto/*"],
+    }
   }
 }
