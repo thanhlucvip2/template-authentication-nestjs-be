@@ -1,22 +1,43 @@
+import { MailerModule } from '@nestjs-modules/mailer';
 import { TypeOrmConectDB } from './ormconfig';
 import { Module } from '@nestjs/common';
 import { UserModule } from '@User/user.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpErrorFilter } from '@Systems/http-error.filter';
 import { LoggingInterceptor } from '@Systems/logging.interceptor';
+import { join } from 'path';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 @Module({
   imports: [
     TypeOrmConectDB,
     UserModule,
     ConfigModule.forRoot(),
-    // MailerModule.forRoot({
-    //   transport: 'smtps://fmsn0097@gmail.com:Lucs2tien@smtp.gmail.com',
-    //   defaults: {
-    //     from: 'fmsn0097@gmail.com',
-    //   },
-    // }),
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (config: ConfigService) => ({
+        transport: {
+          host: config.get('MAIL_HOST'),
+          secure: false,
+          auth: {
+            user: config.get('MAIL_USER'),
+            pass: config.get('MAIL_PASS'),
+          },
+        },
+        defaults: {
+          from: `From mail ${config.get('MAIL_USER')}`,
+        },
+        template: {
+          dir: join(__dirname, 'src/templateMail'),
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
+        },
+      }),
+      inject: [ConfigService],
+    }),
   ],
   controllers: [],
   providers: [

@@ -1,17 +1,20 @@
 import { RoleConstants } from '@Constants/role.constants';
-import { UserDto } from '@Dto/user.dto';
+import { UserLoginDto, UserRegisterDto } from '@Dto/user.dto';
 import { UserEntity } from '@Entitys/user.entity';
+import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { checkRole } from '@Utils/check_role';
+import { randomKey } from '@Utils/ramdom-key';
 import { Repository } from 'typeorm';
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly mailservice: MailerService,
   ) {}
-  async getAllUser(user: UserDto) {
+  async getAllUser(user: UserRegisterDto) {
     const { username } = user;
     const userProfile = await this.userRepository.findOne({
       where: { username },
@@ -33,27 +36,38 @@ export class UserService {
     const listUser = await this.userRepository.find();
     return listUser;
   }
-  async resetPassword() {
-    // // Thiết lập thông tin email
-    // const mailOptions = {
-    //   from: '"Your Name" fmsn0097@gmail.com',
-    //   to: 'doanthanhluc91bvh@gmail.com',
-    //   subject: 'Test Email',
-    //   text: 'Hello World!',
-    //   html: '<b>Hello World!</b>',
-    // };
+  async resetPassword(username: string) {
+    if (!username) {
+      throw new HttpException('Vui lòng điền username', HttpStatus.BAD_REQUEST);
+    }
+    const newPassword = randomKey(10);
 
-    // await transporter.sendMail(mailOptions, (error, info) => {
-    //   if (error) {
-    //     return console.log(error);
-    //   }
-    //   console.log('Message sent: %s', info.messageId);
-    // });
+    const userProfile = await this.userRepository.findOne({
+      where: { username },
+    });
+    if (!userProfile) {
+      throw new HttpException(
+        `${username} không tồn tại trong hệ thống`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    await this.userRepository.update(
+      { username },
+      { ...userProfile, password: await userProfile.hashPassword(newPassword) },
+    );
 
-    return 'success';
+    await this.mailservice.sendMail({
+      to: userProfile.email,
+      from: 'Hacheehouse Shop',
+      subject: 'RESET PASSWORD', // Subject line
+      text: 'Hacheehouse Shop', // plaintext body
+      html: `<h1>${newPassword}</h1>`,
+    });
+
+    return 'Vui lòng kiểm tra email';
   }
 
-  async login(userData: UserDto) {
+  async login(userData: UserLoginDto) {
     const { username, password } = userData;
 
     const userProfile = await this.userRepository.findOne({
@@ -77,7 +91,7 @@ export class UserService {
     return userProfile.responseData({ showToken: true });
   }
 
-  async register(userData: UserDto) {
+  async register(userData: UserRegisterDto) {
     const { username, password } = userData;
 
     const userProfile = await this.userRepository.findOne({

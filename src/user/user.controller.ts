@@ -1,10 +1,9 @@
-import { UserDto } from '@Dto/user.dto';
+import { UserRegisterDto, UserLoginDto } from '@Dto/user.dto';
 import {
   Controller,
   Get,
   Post,
   Body,
-  Put,
   UseGuards,
   UsePipes,
   Query,
@@ -20,35 +19,32 @@ export class UserController {
 
   @Get()
   @UseGuards(new AuthGuard()) // check token
-  getAllUser(@UserCustomDecorator() user: UserDto) {
+  getAllUser(@UserCustomDecorator() user: UserRegisterDto) {
     return this.userService.getAllUser(user);
   }
 
   @Post('reset-password')
-  // @UseGuards(new AuthGuard()) // check token
-  async resetPassword(
-    @UserCustomDecorator() user: UserDto,
-    @Query('username') username: string,
-  ) {
-    return this.userService.resetPassword();
+  async resetPassword(@Query('username') username: string) {
+    return this.userService.resetPassword(username);
   }
   @Post('register')
-  async registorUser(@Body() userData: UserDto) {
+  @UsePipes(new ValidationPipe())
+  async registorUser(@Body() userData: UserRegisterDto) {
     return this.userService.register(userData);
   }
 
   @Post('login')
   @UsePipes(new ValidationPipe())
-  async login(@Body() userData: UserDto) {
+  async login(@Body() userData: UserLoginDto) {
     return this.userService.login(userData);
   }
 
-  @Put('update')
-  @UseGuards(new AuthGuard()) // check token
-  async updateUser(
-    @Body() data: UserDto,
-    @UserCustomDecorator() user: UserDto,
-  ) {
-    // return this.userService.updateUser(data, user);
-  }
+  // @Put('update')
+  // @UseGuards(new AuthGuard()) // check token
+  // async updateUser(
+  //   @Body() data: UserDto,
+  //   @UserCustomDecorator() user: UserDto,
+  // ) {
+  //   // return this.userService.updateUser(data, user);
+  // }
 }

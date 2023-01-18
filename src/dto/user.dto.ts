@@ -1,13 +1,24 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class UserDto {
+export class UserRegisterDto {
+  @IsNotEmpty()
+  username: string;
+
+  @IsNotEmpty()
+  email: string;
+
+  @IsNotEmpty()
+  password: string;
+
+  // role?: string;
+}
+
+export class UserLoginDto {
   @IsNotEmpty()
   username: string;
 
   @IsNotEmpty()
   password: string;
-
-  role?: string;
 }
 export class UserProfileModel {
   id: string;
@@ -15,5 +26,6 @@ export class UserProfileModel {
   updateAt: Date;
   username: string;
   role: string;
+  email: string;
   password: string;
 }

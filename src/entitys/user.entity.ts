@@ -5,6 +5,7 @@ import {
   UpdateDateColumn,
   Column,
   BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import * as jsonwebtoken from 'jsonwebtoken';
@@ -25,6 +26,15 @@ export class UserEntity {
 
   @Column({
     type: 'varchar',
+    length: 100,
+    nullable: true,
+    // unique: true,
+    default: 'doanthanhluccntt@gmail.com',
+  })
+  email: string;
+
+  @Column({
+    type: 'varchar',
     length: 30,
     nullable: true,
     default: RoleConstants.USER,
@@ -33,10 +43,12 @@ export class UserEntity {
 
   @Column({ type: 'text', nullable: false })
   password: string;
-
-  @BeforeInsert()
   // trước khi insert mã hóa pass
-  async hashPassword() {
+  @BeforeInsert()
+  async hashPassword(passWord: string) {
+    if (passWord) {
+      return await bcrypt.hash(passWord, 10);
+    }
     return (this.password = await bcrypt.hash(this.password, 10));
   }
 
