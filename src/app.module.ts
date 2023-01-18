@@ -7,7 +7,17 @@ import { HttpErrorFilter } from '@Systems/http-error.filter';
 import { LoggingInterceptor } from '@Systems/logging.interceptor';
 
 @Module({
-  imports: [TypeOrmConectDB, UserModule, ConfigModule.forRoot()],
+  imports: [
+    TypeOrmConectDB,
+    UserModule,
+    ConfigModule.forRoot(),
+    // MailerModule.forRoot({
+    //   transport: 'smtps://fmsn0097@gmail.com:Lucs2tien@smtp.gmail.com',
+    //   defaults: {
+    //     from: 'fmsn0097@gmail.com',
+    //   },
+    // }),
+  ],
   controllers: [],
   providers: [
     {
