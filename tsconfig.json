@@ -26,6 +26,7 @@
       "@Apis/*": ["./src/apis/*"],
       "@Constants/*": ["./src/constants/*"],
       "@Dto/*": ["./src/dto/*"],
+      "@Pipe/*": ["./src/pipe/*"],
     }
   }
 }

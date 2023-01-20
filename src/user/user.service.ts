@@ -1,7 +1,7 @@
-import { RoleConstants } from '@Constants/role.constants';
 import { StatusUserConstants } from '@Constants/status-user.constants';
 import { ResponseData } from '@Dto/response-data';
 import {
+  UserByToken,
   UserLoginDto,
   UserRegisterDto,
   UserUpdatePasswordDto,
@@ -10,7 +10,6 @@ import { UserEntity } from '@Entitys/user.entity';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { checkRole } from '@Utils/check_role';
 import { randomKey } from '@Utils/ramdom-key';
 import { EntityManager, Repository } from 'typeorm';
 @Injectable()
@@ -22,7 +21,7 @@ export class UserService {
     private manageEntity: EntityManager,
   ) {}
 
-  async getAllUser(userAuth: { username: string }) {
+  async getAllUser(userAuth: UserByToken) {
     const { username } = userAuth;
     const userProfile = await this.userRepository.findOne({
       where: { username },
@@ -34,17 +33,10 @@ export class UserService {
       );
     }
 
-    const roleAdmin = await checkRole(userProfile, RoleConstants.ADMIN);
-    if (!roleAdmin) {
-      throw new HttpException(
-        'Bạn không có quyền admin',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
     const listUser = await this.userRepository.find();
     return listUser;
   }
-  async getUserProfile(userAuth: { username: string }) {
+  async getUserProfile(userAuth: UserByToken) {
     const { username } = userAuth;
 
     const userProfile = await this.userRepository.findOne({
@@ -134,10 +126,7 @@ export class UserService {
     return userProfile.responseData({ showToken: true });
   }
 
-  async updatePassword(
-    userData: UserUpdatePasswordDto,
-    userAuth: { username: string },
-  ) {
+  async updatePassword(userData: UserUpdatePasswordDto, userAuth: UserByToken) {
     const { password, newPassword } = userData;
     const { username } = userAuth;
     const userProfile = await this.userRepository.findOne({

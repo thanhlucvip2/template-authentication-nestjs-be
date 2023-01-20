@@ -85,13 +85,14 @@ export class UserEntity {
 
   // tạo token
   private get token() {
-    const { id, username, createAt, updateAt } = this;
+    const { id, username, createAt, updateAt, role } = this;
     return jsonwebtoken.sign(
       {
         id,
         username,
         createAt,
         updateAt,
+        role,
       },
       process.env.SECRET,
       {

@@ -37,3 +37,13 @@ export class UserProfileModel {
   email: string;
   password: string;
 }
+
+export class UserByToken {
+  id: string;
+  username: string;
+  createAt: string;
+  updateAt: string;
+  role: string;
+  iat: number;
+  exp: number;
+}

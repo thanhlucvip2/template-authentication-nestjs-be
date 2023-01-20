@@ -2,6 +2,7 @@ import {
   UserRegisterDto,
   UserLoginDto,
   UserUpdatePasswordDto,
+  UserByToken,
 } from '@Dto/user.dto';
 import {
   Controller,
@@ -14,7 +15,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { AuthGuard } from '@Systems/auth.guard';
-import { ValidationPipe } from '@Systems/validation.pipe';
+import { RoleAdminPipe } from '@Pipe/role-admin.pipe';
+import { ValidationPipe } from '@Pipe/validation.pipe';
 import { UserCustomDecorator } from './user.decorator';
 import { UserService } from './user.service';
 
@@ -24,7 +26,8 @@ export class UserController {
 
   @Get('all-user')
   @UseGuards(new AuthGuard()) // check token
-  getAllUser(@UserCustomDecorator() userAuth: { username: string }) {
+  @UsePipes(new RoleAdminPipe())
+  getAllUser(@UserCustomDecorator(RoleAdminPipe) userAuth: UserByToken) {
     return this.userService.getAllUser(userAuth);
   }
 
@@ -34,7 +37,7 @@ export class UserController {
   }
   @Get('user-profile')
   @UseGuards(new AuthGuard()) // check token
-  getUserProfile(@UserCustomDecorator() userAuth: { username: string }) {
+  getUserProfile(@UserCustomDecorator() userAuth: UserByToken) {
     return this.userService.getUserProfile(userAuth);
   }
 
@@ -64,7 +67,7 @@ export class UserController {
   @UsePipes(new ValidationPipe())
   @UseGuards(new AuthGuard()) // check token
   async updateUser(
-    @UserCustomDecorator() userAuth: { username: string },
+    @UserCustomDecorator() userAuth: UserByToken,
     @Body() dataPassword: UserUpdatePasswordDto,
   ) {
     return this.userService.updatePassword(dataPassword, userAuth);
