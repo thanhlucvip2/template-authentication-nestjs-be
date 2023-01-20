@@ -1,3 +1,4 @@
+import { ResponseData } from '@Dto/response-data';
 import { HttpStatus } from '@nestjs/common';
 //TODO : tạo bản ghi đè HttpException
 import {
@@ -20,13 +21,15 @@ export class HttpErrorFilter implements ExceptionFilter {
       : HttpStatus.INTERNAL_SERVER_ERROR; // response sẽ trả về 404
 
     // tạo status khi có response lỗi
-    const errResponse = {
+    const errResponse = new ResponseData<null>({
       code: status, // status (404)
-      timeRes: new Date().toLocaleDateString(), // time error
-      path: requests.url, // url error
+      timeRes: new Date(), // time error
       method: requests.method, // method POST / PUT / GET / DELETE
       message: exception.message || null, // message
-    };
+      data: null,
+      status: 'ERROR',
+    });
+
     Logger.error(
       `${requests.method} ${requests.url}`,
       JSON.stringify(errResponse),

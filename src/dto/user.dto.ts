@@ -20,6 +20,14 @@ export class UserLoginDto {
   @IsNotEmpty()
   password: string;
 }
+export class UserUpdatePasswordDto {
+  @IsNotEmpty()
+  password: string;
+
+  @IsNotEmpty()
+  newPassword: string;
+}
+
 export class UserProfileModel {
   id: string;
   createAt: Date;

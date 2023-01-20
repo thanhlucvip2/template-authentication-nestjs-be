@@ -9,7 +9,6 @@ export class AuthGuard implements CanActivate {
     // check xem trong header request có authorization chưa
     if (!request.headers.authorization) {
       throw new HttpException('Invalid Authorization', HttpStatus.BAD_REQUEST);
-      return false;
     }
     // check token
     // gắn user vào cho requests

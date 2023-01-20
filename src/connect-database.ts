@@ -2,7 +2,7 @@ import { ENV_CONFIG } from './constants/env.constants';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-export const TypeOrmConectDB = TypeOrmModule.forRootAsync({
+export const ConnectDatabase = TypeOrmModule.forRootAsync({
   imports: [ConfigModule],
   useFactory: (configService: ConfigService) => ({
     type: 'mysql',

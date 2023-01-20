@@ -5,11 +5,11 @@ import {
   UpdateDateColumn,
   Column,
   BeforeInsert,
-  BeforeUpdate,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import * as jsonwebtoken from 'jsonwebtoken';
 import { RoleConstants } from '@Constants/role.constants';
+import { StatusUserConstants } from '@Constants/status-user.constants';
 @Entity()
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -26,10 +26,17 @@ export class UserEntity {
 
   @Column({
     type: 'varchar',
-    length: 100,
+    length: 30,
     nullable: true,
-    // unique: true,
-    default: 'doanthanhluccntt@gmail.com',
+    default: StatusUserConstants.NO_ACTIVE,
+  })
+  status: string;
+
+  @Column({
+    type: 'varchar',
+    length: 100,
+    nullable: false,
+    unique: true,
   })
   email: string;
 
@@ -40,6 +47,13 @@ export class UserEntity {
     default: RoleConstants.USER,
   })
   role: string;
+  @Column({
+    type: 'varchar',
+    length: 30,
+    nullable: true,
+    // default: Math.floor(100000 + Math.random() * 900000),
+  })
+  veryCode: string;
 
   @Column({ type: 'text', nullable: false })
   password: string;
@@ -60,10 +74,16 @@ export class UserEntity {
     }
     return data;
   }
+  userProfile() {
+    const { email, username, role, status, createAt } = this;
+    return { email, username, role, status, createAt };
+  }
   async comparePassword(passwordHash: string): Promise<boolean> {
     // check password trùng khớp không
     return await bcrypt.compare(passwordHash, this.password);
   }
+
+  // tạo token
   private get token() {
     const { id, username, createAt, updateAt } = this;
     return jsonwebtoken.sign(
