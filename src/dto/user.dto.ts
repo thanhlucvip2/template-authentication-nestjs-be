@@ -9,8 +9,6 @@ export class UserRegisterDto {
 
   @IsNotEmpty()
   password: string;
-
-  // role?: string;
 }
 
 export class UserLoginDto {
@@ -27,17 +25,14 @@ export class UserUpdatePasswordDto {
   @IsNotEmpty()
   newPassword: string;
 }
-
 export class UserProfileModel {
-  id: string;
-  createAt: Date;
-  updateAt: Date;
+  email: string;
   username: string;
   role: string;
-  email: string;
-  password: string;
+  status: string;
+  createAt: Date;
+  token?: string;
 }
-
 export class UserByToken {
   id: string;
   username: string;

@@ -26,7 +26,7 @@ export class UserController {
 
   @Get('all-user')
   @UseGuards(new AuthGuard()) // check token
-  @UsePipes(new RoleAdminPipe())
+  @UsePipes(new RoleAdminPipe()) // check role có quyền admin không
   getAllUser(@UserCustomDecorator(RoleAdminPipe) userAuth: UserByToken) {
     return this.userService.getAllUser(userAuth);
   }

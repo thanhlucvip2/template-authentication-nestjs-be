@@ -9,7 +9,12 @@ import { LoggingInterceptor } from '@Systems/logging.interceptor';
 import { ConnectEmail } from './connect-email';
 
 @Module({
-  imports: [ConnectDatabase, UserModule, ConfigModule.forRoot(), ConnectEmail],
+  imports: [
+    ConnectDatabase, // két nối data base
+    ConnectEmail, // kết nối email
+    UserModule,
+    ConfigModule.forRoot(),
+  ],
   controllers: [],
   providers: [
     {

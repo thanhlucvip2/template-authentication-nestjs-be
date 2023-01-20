@@ -1,3 +1,4 @@
+// tạo response mẫu
 export class ResponseData<T> {
   message: string;
   status: string;

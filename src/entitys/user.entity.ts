@@ -24,6 +24,7 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 30, nullable: false, unique: true })
   username: string;
 
+  // trạng thái user đã active chưa
   @Column({
     type: 'varchar',
     length: 30,
@@ -40,6 +41,7 @@ export class UserEntity {
   })
   email: string;
 
+  // mặc định quyền user khi tạo
   @Column({
     type: 'varchar',
     length: 30,
@@ -47,18 +49,22 @@ export class UserEntity {
     default: RoleConstants.USER,
   })
   role: string;
+
+  // code để xác minh
   @Column({
     type: 'varchar',
     length: 30,
     nullable: true,
-    // default: Math.floor(100000 + Math.random() * 900000),
   })
   veryCode: string;
 
   @Column({ type: 'text', nullable: false })
   password: string;
-  // trước khi insert mã hóa pass
+
+  // trước khi insert mã hóa passwrd
   @BeforeInsert()
+
+  // hàm mã hóa pass khi tạo user hoặc dùng để mã hóa khi update user
   async hashPassword(passWord: string) {
     if (passWord) {
       return await bcrypt.hash(passWord, 10);
@@ -66,18 +72,16 @@ export class UserEntity {
     return (this.password = await bcrypt.hash(this.password, 10));
   }
 
-  responseData({ showToken }: { showToken?: boolean }) {
-    const { username, createAt, updateAt, token } = this;
-    const data = { username, createAt, updateAt, token };
+  // tạo user mẫu khi đăng nhập
+  userProfile(showToken = false) {
+    const { email, username, role, status, createAt, token } = this;
+    const data = { email, username, role, status, createAt, token };
     if (!showToken) {
       delete data.token;
     }
     return data;
   }
-  userProfile() {
-    const { email, username, role, status, createAt } = this;
-    return { email, username, role, status, createAt };
-  }
+
   async comparePassword(passwordHash: string): Promise<boolean> {
     // check password trùng khớp không
     return await bcrypt.compare(passwordHash, this.password);

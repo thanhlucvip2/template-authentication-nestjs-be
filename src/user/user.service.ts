@@ -3,6 +3,7 @@ import { ResponseData } from '@Dto/response-data';
 import {
   UserByToken,
   UserLoginDto,
+  UserProfileModel,
   UserRegisterDto,
   UserUpdatePasswordDto,
 } from '@Dto/user.dto';
@@ -122,8 +123,15 @@ export class UserService {
         HttpStatus.BAD_REQUEST,
       );
     }
-
-    return userProfile.responseData({ showToken: true });
+    const newResponse = new ResponseData<UserProfileModel>({
+      code: HttpStatus.OK,
+      status: 'SUCCESS',
+      timeRes: new Date(),
+      message: 'Đăng ký thành công, vui lòng kiểm tra email để xác minh!',
+      method: 'POST',
+      data: userProfile.userProfile(true),
+    });
+    return newResponse;
   }
 
   async updatePassword(userData: UserUpdatePasswordDto, userAuth: UserByToken) {
@@ -156,7 +164,7 @@ export class UserService {
 
     await this.userRepository.update(
       { username },
-      { ...userProfile, password: await userProfile.hashPassword(newPassword) },
+      { ...userProfile, password: await userProfile.hashPassword(newPassword) }, // mã hóa pass và update
     );
 
     const newResponse = new ResponseData<null>({
@@ -167,6 +175,7 @@ export class UserService {
       method: 'PUT',
       data: null,
     });
+
     return newResponse;
   }
 

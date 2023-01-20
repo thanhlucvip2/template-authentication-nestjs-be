@@ -11,6 +11,7 @@ import {
 @Injectable()
 export class RoleAdminPipe implements PipeTransform {
   transform(value: UserByToken, metadata: ArgumentMetadata) {
+    // check role có quyền admin không
     if (value.role !== RoleConstants.ADMIN) {
       throw new HttpException(
         'Bạn không có quyền admin',
