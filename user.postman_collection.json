@@ -1,0 +1,301 @@
+{
+	"info": {
+		"_postman_id": "24f921bd-22d9-4a73-8f18-a46760b662bd",
+		"name": "user",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17029666"
+	},
+	"item": [
+		{
+			"name": "[ADMIN] get all user",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{admin_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/user/all-user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"all-user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[USER] get user profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{admin_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/user/user-profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"user-profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[USER] update password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{admin_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "password",
+							"value": "thanhlucvip1",
+							"type": "text"
+						},
+						{
+							"key": "newPassword",
+							"value": "thanhlucvip",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/user/update-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"update-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PUBLIC] very code",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/user/very-code?username=thanhlucvip&code=435462",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"very-code"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "thanhlucvip"
+						},
+						{
+							"key": "code",
+							"value": "435462"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PUBLIC] Resend Code",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/user/resend-code?username=thanhlucvip",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"resend-code"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "thanhlucvip"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PUBLIC] Reset password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NzcyYTNhLThlYTMtNDFiZi1iMzQ3LWQyNjE5MmJhYmMxYyIsInVzZXJuYW1lIjoiYWRtaW4iLCJjcmVhdGVBdCI6IjIwMjMtMDEtMThUMDM6MzM6NTYuMTk3WiIsInVwZGF0ZUF0IjoiMjAyMy0wMS0xOFQwMzozNDoxNC4wMzlaIiwiaWF0IjoxNjc0MDE2OTQxLCJleHAiOjE2NzQwMjA1NDF9.0OY2L7uPE5H0ww14wFbbJEfR-TiYjxdnwT3UPvV6Nh0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "thanhlucvip",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/user/reset-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"reset-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PUBLIC] login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "thanhlucvip",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "xk6YhQouHK",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/user/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PUBLIC] register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "thanhlucvip",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "thanhlucvip",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "doanthanhluc91bvh@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/user/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
