@@ -9,6 +9,12 @@ export class UserRegisterDto {
 
   @IsNotEmpty()
   password: string;
+
+  @IsNotEmpty()
+  phoneNumber: string;
+
+  @IsNotEmpty()
+  fullName: string;
 }
 
 export class UserLoginDto {

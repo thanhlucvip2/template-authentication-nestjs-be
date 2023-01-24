@@ -180,7 +180,7 @@ export class UserService {
   }
 
   async register(userData: UserRegisterDto) {
-    const { username, password, email } = userData;
+    const { username, password, email, fullName, phoneNumber } = userData;
     const userProfile = await this.manageEntity
       .createQueryBuilder(UserEntity, 'userTable')
       .where('username = :username OR email = :email', {
@@ -199,6 +199,8 @@ export class UserService {
       username,
       password,
       email,
+      fullName,
+      phoneNumber,
       veryCode: veryCode,
     });
 

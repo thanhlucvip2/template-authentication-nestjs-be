@@ -41,6 +41,20 @@ export class UserEntity {
   })
   email: string;
 
+  @Column({
+    type: 'varchar',
+    length: 100,
+    nullable: false,
+  })
+  phoneNumber: string;
+
+  @Column({
+    type: 'varchar',
+    length: 100,
+    nullable: false,
+  })
+  fullName: string;
+
   // mặc định quyền user khi tạo
   @Column({
     type: 'varchar',
@@ -74,8 +88,26 @@ export class UserEntity {
 
   // tạo user mẫu khi đăng nhập
   userProfile(showToken = false) {
-    const { email, username, role, status, createAt, token } = this;
-    const data = { email, username, role, status, createAt, token };
+    const {
+      email,
+      username,
+      role,
+      status,
+      createAt,
+      token,
+      fullName,
+      phoneNumber,
+    } = this;
+    const data = {
+      email,
+      username,
+      role,
+      status,
+      createAt,
+      token,
+      fullName,
+      phoneNumber,
+    };
     if (!showToken) {
       delete data.token;
     }
