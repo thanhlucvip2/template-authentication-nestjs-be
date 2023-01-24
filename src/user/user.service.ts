@@ -127,7 +127,7 @@ export class UserService {
       code: HttpStatus.OK,
       status: 'SUCCESS',
       timeRes: new Date(),
-      message: 'Đăng ký thành công, vui lòng kiểm tra email để xác minh!',
+      message: 'Đăng nhập thành công!',
       method: 'POST',
       data: userProfile.userProfile(true),
     });
@@ -238,6 +238,14 @@ export class UserService {
     const userProfile = await this.userRepository.findOne({
       where: { username },
     });
+
+    if (userProfile.status === StatusUserConstants.ACTIVE) {
+      throw new HttpException(
+        'User đã được xác nhận từ trước!',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     if (!userProfile) {
       throw new HttpException(
         'User không tồn tại trong hệ thống!',

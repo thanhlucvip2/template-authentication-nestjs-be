@@ -52,12 +52,6 @@ export class UserController {
     return this.userService.register(userData);
   }
 
-  @Post('login')
-  @UsePipes(new ValidationPipe())
-  async login(@Body() userData: UserLoginDto) {
-    return this.userService.login(userData);
-  }
-
   @Get('very-code')
   veryCode(@Query() data: { username: string; code: string }) {
     return this.userService.veryCode(data);
